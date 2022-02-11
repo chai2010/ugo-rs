@@ -8,7 +8,18 @@ fn main() {
     let mut buffer = String::new();
     std::io::stdin().read_line(&mut buffer).unwrap();
 
-    compile(buffer.as_ref());
+    println!("{}", run(buffer.as_ref()));
+}
+
+fn run(code: &str) -> i32 {
+    compile(code);
+
+    let status = std::process::Command::new("./a.out").status().unwrap();
+
+    match status.code() {
+        Some(code) => code,
+        None => -1,
+    }
 }
 
 fn compile(code: &str) {
