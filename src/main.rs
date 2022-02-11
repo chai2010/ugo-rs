@@ -99,3 +99,16 @@ fn parse_tokens(code: &str) -> Vec<&str> {
         return tokens;
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn run_works() {
+        assert_eq!(run("1"), 1);
+        assert_eq!(run("1+1"), 2);
+        assert_eq!(run("1 + 3 - 2"), 2);
+        assert_eq!(run("1+2+3+4"), 10);
+    }
+}
