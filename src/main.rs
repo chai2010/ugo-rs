@@ -4,6 +4,7 @@
 
 mod ast;
 mod compiler;
+mod lex;
 
 fn main() {
     // 1+2*(3+4)
