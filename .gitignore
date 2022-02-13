@@ -1,4 +1,3 @@
-/target
-/builtin/target
+target
 
 *.out*
