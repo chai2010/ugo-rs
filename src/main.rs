@@ -5,44 +5,20 @@
 mod ast;
 mod compiler;
 mod lex;
+mod parser;
 
 fn main() {
-    // 1+2*(3+4)
-    let node = crate::ast::ExprNode {
-        value: "+",
-        left: Some(Box::new(crate::ast::ExprNode {
-            value: "1",
-            left: None,
-            right: None,
-        })),
-        right: Some(Box::new(crate::ast::ExprNode {
-            value: "*",
-            left: Some(Box::new(crate::ast::ExprNode {
-                value: "2",
-                left: None,
-                right: None,
-            })),
-            right: Some(Box::new(crate::ast::ExprNode {
-                value: "+",
-                left: Some(Box::new(crate::ast::ExprNode {
-                    value: "3",
-                    left: None,
-                    right: None,
-                })),
-                right: Some(Box::new(crate::ast::ExprNode {
-                    value: "4",
-                    left: None,
-                    right: None,
-                })),
-            })),
-        })),
-    };
-
-    println!("{}", run(&node));
+    let ret = run("1+2*(3+4)");
+    println!("{}", ret);
 }
 
-fn run(node: &crate::ast::ExprNode) -> i32 {
-    compile(node);
+fn run(code: &str) -> i32 {
+    let tokens = crate::lex::lex(code);
+
+    let parser = crate::parser::Parser::new(&tokens);
+    let node = parser.build();
+
+    compile(node.as_ref().unwrap());
 
     let status = std::process::Command::new("./a.out").status().unwrap();
 
